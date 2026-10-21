@@ -1,1 +1,31 @@
-# Rempli en phase 4.
+[Unit]
+Description=sysdash, tableau de bord de monitoring serveur
+After=network.target
+
+[Service]
+Type=exec
+ExecStart=/usr/local/bin/sysdash
+User=sysdash
+Group=sysdash
+# Lecture du journal de apt-upgrade.service (logs de mise à jour).
+SupplementaryGroups=systemd-journal
+Environment=SYSDASH_BIND=127.0.0.1:8090
+Restart=on-failure
+
+# Durcissement
+NoNewPrivileges=true
+ProtectSystem=strict
+# read-only plutôt que true : avec true, /home est masqué par un tmpfs et ses
+# statistiques disque seraient fausses s'il est sur une partition dédiée.
+ProtectHome=read-only
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+# Inclut les processus enfants (apt list, systemctl, journalctl).
+MemoryMax=50M
+
+[Install]
+WantedBy=multi-user.target
