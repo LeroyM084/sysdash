@@ -1,1 +1,9 @@
-# Rempli en phase 2.
+[Unit]
+Description=Mise à jour des paquets apt (sysdash)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=DEBIAN_FRONTEND=noninteractive
+ExecStart=/usr/bin/apt-get -y -o Dpkg::Options::=--force-confold upgrade
