@@ -3,11 +3,116 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
   <title>sysdash</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>sysdash</h1>
+  <div class="wrap">
+    <header class="top">
+      <div class="host">
+        <span id="conn" class="dot" role="status" aria-label="Déconnecté" title="Déconnecté"></span>
+        <h1 id="hostname">sysdash</h1>
+      </div>
+      <div class="uptime">en ligne depuis <span id="uptime" class="num">—</span></div>
+    </header>
+
+    <main class="grid">
+      <section class="card cpu-card">
+        <h2>CPU</h2>
+        <div class="gauge" id="cpu-gauge">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="track" cx="60" cy="60" r="52"></circle>
+            <circle class="value" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="gauge-label">
+            <div><span class="gauge-value num" id="cpu-pct">—</span><span class="gauge-unit">%</span></div>
+          </div>
+        </div>
+        <div class="cores" id="cores"></div>
+        <div class="caption" id="cores-caption"></div>
+      </section>
+
+      <section class="card mem-card">
+        <h2>Mémoire</h2>
+        <div class="gauge" id="mem-gauge">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="track" cx="60" cy="60" r="52"></circle>
+            <circle class="value" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="gauge-label">
+            <div><span class="gauge-value num" id="mem-pct">—</span><span class="gauge-unit">%</span></div>
+          </div>
+        </div>
+        <div class="mem-text num" id="mem-text">—</div>
+        <div class="swap">
+          <div class="row-head">
+            <span class="label">Swap</span>
+            <span class="num" id="swap-text">—</span>
+          </div>
+          <div class="bar bar-thin" id="swap-bar"><div class="bar-fill"></div></div>
+        </div>
+      </section>
+
+      <section class="card net-card">
+        <h2>Réseau</h2>
+        <div class="net-row rx">
+          <div class="row-head">
+            <span class="label">↓ Réception</span>
+            <span class="net-value num" id="rx">—</span>
+          </div>
+          <svg class="spark" id="rx-spark" viewBox="0 0 59 40" preserveAspectRatio="none" aria-hidden="true">
+            <path class="area"></path>
+            <path class="line"></path>
+          </svg>
+        </div>
+        <div class="net-row tx">
+          <div class="row-head">
+            <span class="label">↑ Émission</span>
+            <span class="net-value num" id="tx">—</span>
+          </div>
+          <svg class="spark" id="tx-spark" viewBox="0 0 59 40" preserveAspectRatio="none" aria-hidden="true">
+            <path class="area"></path>
+            <path class="line"></path>
+          </svg>
+        </div>
+      </section>
+
+      <section class="card disk-card span-all">
+        <h2>Disques</h2>
+        <div id="disks" class="disks"></div>
+      </section>
+
+      <section class="card upd-card span-all">
+        <h2>
+          Mises à jour
+          <span class="badge num" id="upd-count">–</span>
+          <span class="badge badge-warn" id="upd-reboot" hidden>Redémarrage requis</span>
+        </h2>
+        <div class="upd-head">
+          <div>
+            <div id="upd-summary">Chargement…</div>
+            <div class="caption" id="upd-checked"></div>
+          </div>
+          <div class="upd-actions">
+            <button type="button" class="btn btn-primary" id="upd-apply" disabled>Mettre à jour</button>
+            <div class="confirm" id="upd-confirm" hidden>
+              <span id="upd-confirm-text"></span>
+              <button type="button" class="btn" id="upd-cancel">Annuler</button>
+              <button type="button" class="btn btn-primary" id="upd-ok">Confirmer</button>
+            </div>
+          </div>
+        </div>
+        <p class="upd-state" id="upd-state" hidden></p>
+        <details class="upd-details" id="upd-details" hidden>
+          <summary>Voir les paquets</summary>
+          <ul class="pkg-list" id="upd-list"></ul>
+        </details>
+        <pre class="log" id="upd-log" hidden></pre>
+      </section>
+    </main>
+  </div>
   <script src="/app.js"></script>
 </body>
 </html>
